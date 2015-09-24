@@ -1,0 +1,1 @@
+a:1:{s:5:"Monie";a:4:{s:8:"username";s:5:"Monie";s:8:"password";s:128:"8ff8d98985dab4b5393e7c38eb72f1b8c3a220e04d67b98aeae674e02cea5c6e99024aac154f8800dc16b7b6d71a45b99b7d6a354b0bcc8126bdc7c8a83674e7";s:4:"rank";i:3;s:8:"loggedin";b:0;}}
