@@ -1,8 +1,7 @@
 <?php
 require_once 'SmartIRC.php';
-
-DEFINE('TOAD_RANK_USER', 0);
-DEFINE('TOAD_RANK_BOTOP', 1);
+define('TOAD_RANK_USER', 0);
+define('TOAD_RANK_BOTOP', 1);
 define('TOAD_RANK_ADMIN', 2);
 define('TOAD_RANK_OWNER', 3);
 
@@ -11,41 +10,46 @@ class Toad {
 
    	public $users;
 	public $prefix = '%';
-	public $_dbHandle;
+	public $_dbHandle = null;
 	public $_NickServPass = '';
     // Is the DB already open?
     public $_dbOpen = false;
+    private $dbInput;
       
+    public function __construct() {
+        $this->dbInput = null; // Fix coming later
+    }
 	    function query($query)
       {
           $this->_db_open();
           //$result = mysql_db_query('moniebot', $query, $mysql_link);
-          $result = mysql_query($query);
+          $result = $this->_dbHandle->query($query);
           return $result;
       }
 	  
       function _db_open()
       {
-          if ($this->_dbOpen === false) {
-              if (($this->_dbHandle = mysql_connect($argv[1], $argv[2], $argv[3])) === false) {
-                  die('Could not open DB: ' . mysql_error());
-              }
-              if (mysql_select_db('jamone_toad') === false) {
-                  die('Could not open DB: ' . mysql_error());
-              }
-              $this->_dbOpen = true;
-              //$this->_dbAutoCloseTimer = $this->_dbAutoCloseDelay; # Not in use with mysql_pconnect()
+          $this->_dbHandle = new mysqli($dbInput[1], $dbInput[2], $dbInput[3], "jamone_toad");
+          if($this->_dbHandle->connect_errno) {
+              printf("Connect failed: %s\n", $this->_dbHandle->connect_error);
+              exit();
           }
+          
       }
 	  
-	     function db_ping(&$irc)
-      {
-          if (mysql_ping()) {
-          return;
-          } else {
-          $this->_db_open();
-          }
-      }
+    function db_ping(&$irc) { 
+        if($this->_dbHandle == null) {
+            $this->_db_open();
+            return;
+        }
+        
+        if ($this->_dbHandle->ping()) {
+            return;
+        } else {
+            $this->_db_open();
+        }
+    }
+    
 	function get_users() {
 	$this->users = unserialize(file_get_contents('data/users.txt'));
 	}
@@ -295,8 +299,8 @@ class Toad {
 	  function services_id(&$irc)
 	  {
 	  global $id_once;
-	  //$irc->oper('Monie', 'Dpx45e42');
-	   $irc->message(SMARTIRC_TYPE_QUERY, 'Authserv@services.sinirc.net', 'AUTH Toad '.$this->_NickServPass);
+	  //$irc->oper('Monie', '');
+	   $irc->message(SMARTIRC_TYPE_QUERY, '', 'AUTH Toad '.$this->_NickServPass);
 	  $irc->unregisterTimeid($id_once);
 	  }
       
@@ -322,7 +326,7 @@ class Toad {
   	/*
   	Module loading information
   	*/
-	$irc->registerTimehandler(10000, $toad, 'db_ping');
+	//$irc->registerTimehandler(10000, $toad, 'db_ping');
 	//$id_once = $irc->registerTimehandler(500, $toad, 'services_id');
   	$modules = array('switch', 'quote', 'weather', 'memory',
 					'kick', 'nick', 'uptime', 'join','part',
