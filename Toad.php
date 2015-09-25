@@ -27,10 +27,10 @@ class Toad {
       function _db_open()
       {
           if ($this->_dbOpen === false) {
-              if (($this->_dbHandle = mysql_connect('', '', '')) === false) {
+              if (($this->_dbHandle = mysql_connect($argv[1], $argv[2], $argv[3])) === false) {
                   die('Could not open DB: ' . mysql_error());
               }
-              if (mysql_select_db('toad') === false) {
+              if (mysql_select_db('jamone_toad') === false) {
                   die('Could not open DB: ' . mysql_error());
               }
               $this->_dbOpen = true;
@@ -346,11 +346,11 @@ class Toad {
 			$irc->connect("{$argv[1]}", 6667);
 	}	
 */
-  	$irc->connect("irc.jcink.com", "6667");
-  	$irc->setCtcpVersion('Toad IRC Bot v.4.1');
-  	$irc->login('Toad', 'Toad v4.1', 8 ,'Toad');
+  	$irc->connect("irc.freenode.net", "6667");
+  	$irc->setCtcpVersion('Toad IRC Bot v5');
+  	$irc->login('TB', 'Toad v5', 8 ,'Toad');
   	$irc->mode("$irc->_nick", '+BT');
-	$irc->join(array('#monie'));
+	$irc->join(array('##farce'));
   	$toad->get_users();
   	$irc->listen();
   	$irc->disconnect();

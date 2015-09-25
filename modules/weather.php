@@ -73,7 +73,7 @@ if($toad->is_disabled($irc->_network[1][9], $data->channel, 'weather') == true)
                   return;
               }
               
-              $zip = $this->parse_search(&$irc, $data->nick, $loc);
+              $zip = $this->parse_search($irc, $data->nick, $loc);
               
               if (preg_match('/There were multiple matches for your search./i', $zip)) {
                   return;
@@ -124,7 +124,7 @@ if($toad->is_disabled($irc->_network[1][9], $data->channel, 'weather') == true)
               $row = mysql_fetch_assoc($result);
               
               
-              $zip = $this->parse_search(&$irc, $data->nick, $row['w_loc']);
+              $zip = $this->parse_search($irc, $data->nick, $row['w_loc']);
               
               if (preg_match('/There were multiple matches for your search./i', $zip)) {
                   return;
@@ -205,7 +205,7 @@ if($toad->is_disabled($irc->_network[1][9], $data->channel, 'weather') == true)
               
               $row = mysql_fetch_assoc($result);
               
-              $zip = $this->parse_search(&$irc, $data->nick, $row['w_loc']);
+              $zip = $this->parse_search($irc, $data->nick, $row['w_loc']);
               
               if (preg_match('/There were multiple matches for your search./i', $zip)) {
                   return;
