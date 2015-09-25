@@ -11,7 +11,7 @@ class Toad {
    	public $users;
 	public $prefix = '%';
 	public $_dbHandle = null;
-	public $_NickServPass = '';
+	public $_NickServPass = 'CONFIGURE';
     // Is the DB already open?
     public $_dbOpen = false;
     private $dbInput;
@@ -300,7 +300,7 @@ class Toad {
 	  {
 	  global $id_once;
 	  //$irc->oper('Monie', '');
-	   $irc->message(SMARTIRC_TYPE_QUERY, '', 'AUTH Toad '.$this->_NickServPass);
+	   $irc->message(SMARTIRC_TYPE_QUERY, 'NickServ', 'IDENTIFY JKBot '.$this->_NickServPass);
 	  $irc->unregisterTimeid($id_once);
 	  }
       
@@ -327,7 +327,7 @@ class Toad {
   	Module loading information
   	*/
 	//$irc->registerTimehandler(10000, $toad, 'db_ping');
-	//$id_once = $irc->registerTimehandler(500, $toad, 'services_id');
+	$id_once = $irc->registerTimehandler(2500, $toad, 'services_id');
   	$modules = array('switch', 'quote', 'weather', 'memory',
 					'kick', 'nick', 'uptime', 'join','part',
 					'eval', 'spy', 'relay', 'say', 'lovecalc',
@@ -351,10 +351,10 @@ class Toad {
 	}	
 */
   	$irc->connect("irc.freenode.net", "6667");
-  	$irc->setCtcpVersion('Toad IRC Bot v5');
-  	$irc->login('TB', 'Toad v5', 8 ,'Toad');
+  	$irc->setCtcpVersion('JKBot IRC v5');
+  	$irc->login('JKBot', 'JKBot v5', 8 ,'JKBot');
   	$irc->mode("$irc->_nick", '+BT');
-	$irc->join(array('##farce'));
+	$irc->join(array('#jamonek'));
   	$toad->get_users();
   	$irc->listen();
   	$irc->disconnect();

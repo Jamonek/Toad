@@ -26,7 +26,6 @@ class Net_SmartIRC_module_switch
       {
       
       	global $toad;
-
 if (((($toad->users[$data->nick]['loggedin'] == false) && ($toad->users[$data->nick]['rank'] < TOAD_RANK_ADMIN))) || (!$irc->isOpped($data->channel, $data->nick) && !$irc->isHalfoped($data->channel, $data->nick) && !$irc->isAdmined($data->channel, $data->nick) && !$irc->isOwnered($data->channel, $data->nick))) {		
 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "\x02Error\x02: You do not have sufficient access to this command, \x02{$data->nick}\x02.");
 		return;
